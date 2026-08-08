@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Studio] — Your product team, on subscription</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fcfcfb;         /* near-white, faintly warm */
+    --surface:#f3f4f1;       /* light section tint */
+    --green-tint:#eef2ee;    /* faint green surface */
+    --ink:#15181b;           /* near-black text */
+    --muted:#5b615c;         /* secondary text */
+    --line:#e5e7e2;          /* hairline */
+    --green:#1b3b2f;         /* brand — deep pine */
+    --green-600:#245442;     /* hover */
+    --on-dark:#edefea;       /* text on green */
+    --on-dark-muted:#a7b3ac; /* secondary on green */
+    --gold:#e9c98f;          /* warm accent (used sparingly) */
+    --live:#3a8a5f;          /* "spots open" signal */
+    --display:'Schibsted Grotesk', system-ui, sans-serif;
+    --body:'Instrument Sans', system-ui, sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--body);color:var(--ink);background:var(--paper);
+    line-height:1.62;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+  @media(max-width:640px){.wrap{padding:0 24px}}
+
+  .eyebrow{
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:600;color:var(--green);
+  }
+  .eyebrow.on-dark{color:var(--on-dark)}
+
+  h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.06}
+
+  /* plumb line — the one signature, rendered as precise geometry */
+  .plumb line{stroke-width:1}
+  .plumb .bob{fill:var(--green)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(252,252,251,.82);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+  .brand .mark{width:11px;height:30px}
+  .brand .wordmark{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.01em}
+  .brand .tag{
+    font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:3px;padding:3px 6px;margin-left:3px;
+  }
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;opacity:.7;transition:opacity .2s}
+  .nav-links a:hover{opacity:1}
+  .nav-cta{
+    font-weight:600;color:var(--paper)!important;background:var(--green);
+    padding:9px 18px;border-radius:6px;opacity:1!important;transition:background .2s,transform .2s;
+  }
+  .nav-cta:hover{background:var(--green-600);transform:translateY(-1px)}
+  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:132px 0 118px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:auto 1fr;gap:46px}
+  @media(max-width:760px){.hero-grid{grid-template-columns:1fr;gap:0}}
+  .hero-rule{padding-top:6px}
+  .hero-rule svg{height:clamp(220px,34vw,360px);width:12px}
+  @media(max-width:760px){.hero-rule{display:none}}
+  .hero h1{
+    font-size:clamp(42px,6.6vw,80px);max-width:16ch;font-weight:600;
+  }
+  .hero h1 .accent{color:var(--green)}
+  .hero .lede{margin-top:28px;max-width:52ch;font-size:19px;color:var(--muted)}
+  .hero .actions{margin-top:38px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .btn{font-weight:600;font-size:15px;text-decoration:none;border-radius:7px;display:inline-flex;align-items:center;gap:8px;transition:transform .2s,background .2s,border-color .2s,color .2s}
+  .btn-primary{background:var(--green);color:var(--paper);padding:14px 26px}
+  .btn-primary:hover{background:var(--green-600);transform:translateY(-2px)}
+  .btn-text{color:var(--ink);padding:14px 8px;font-weight:600}
+  .btn-text .arw{transition:transform .2s}
+  .btn-text:hover{color:var(--green)}
+  .btn-text:hover .arw{transform:translateX(4px)}
+
+  /* ---------- section scaffolding ---------- */
+  .band{padding:104px 0}
+  .band-tint{background:var(--surface)}
+  .band-green{background:var(--green);color:var(--on-dark)}
+  .band-head{max-width:58ch;margin-bottom:52px}
+  .band-head h2{font-size:clamp(28px,4vw,44px);margin-top:16px}
+  .band-head .sub{margin-top:18px;font-size:18px;color:var(--muted);max-width:56ch}
+  .band-green .band-head h2{color:var(--on-dark)}
+  .band-green .band-head .sub{color:var(--on-dark-muted)}
+
+  /* ---------- belief ---------- */
+  .belief .band-head{margin-bottom:32px}
+  .belief .statement{max-width:58ch}
+  .belief .statement p{font-size:17.5px;color:var(--muted);margin-bottom:18px}
+  .belief .statement p:last-child{margin-bottom:0}
+  .belief .statement strong{color:var(--ink);font-weight:600}
+
+  /* ---------- how it works (green band, numbered steps) ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:8px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr 1fr;gap:34px 26px}}
+  @media(max-width:480px){.steps{grid-template-columns:1fr}}
+  .step{padding-top:20px;border-top:1px solid rgba(255,255,255,.16)}
+  .step .step-n{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.06em;color:var(--gold)}
+  .step h3{color:var(--on-dark);font-size:20px;margin:13px 0 9px}
+  .step p{color:var(--on-dark-muted);font-size:15.5px}
+  .how-notes{margin-top:52px;padding-top:34px;border-top:1px solid rgba(255,255,255,.16);display:grid;grid-template-columns:1fr 1fr;gap:36px}
+  @media(max-width:720px){.how-notes{grid-template-columns:1fr;gap:30px}}
+  .how-notes h4{color:var(--on-dark);font-size:19px;margin-bottom:9px}
+  .how-notes p{color:var(--on-dark-muted);font-size:16px;max-width:54ch}
+  .how-notes strong{color:var(--on-dark);font-weight:600}
+
+  /* ---------- queue (what you can put on it) ---------- */
+  .queue{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;max-width:940px}
+  @media(max-width:640px){.queue{grid-template-columns:1fr;gap:0}}
+  .queue .item{position:relative;padding:20px 0 20px 26px;border-top:1px solid var(--line)}
+  .queue .item::before{content:"";position:absolute;left:3px;top:27px;width:7px;height:7px;background:var(--green);transform:rotate(45deg)}
+  .queue .item h4{font-size:17px;margin-bottom:5px}
+  .queue .item p{font-size:15.5px;color:var(--muted)}
+  .queue-foot{margin-top:34px;font-size:17px;color:var(--ink);max-width:56ch}
+  .queue-foot strong{color:var(--green);font-weight:600}
+
+  /* ---------- pricing ---------- */
+  .spots{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--paper);
+    border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:500;color:var(--ink);margin-bottom:28px}
+  .spots .dot{width:9px;height:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 3px rgba(58,138,95,.16)}
+  .spots .sep{color:var(--line)}
+  .spots .live{color:var(--muted);font-weight:500}
+  .plans{display:grid;grid-template-columns:1.12fr 1fr;gap:24px;align-items:start}
+  @media(max-width:820px){.plans{grid-template-columns:1fr}}
+  .plan{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:38px 34px;position:relative}
+  .plan.featured{border:1.5px solid var(--green)}
+  .plan-tag{display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--green);margin-bottom:16px}
+  .plan h3{font-size:24px}
+  .plan .price-lg{font-family:var(--display);font-weight:600;font-size:clamp(34px,4.4vw,42px);letter-spacing:-.02em;margin-top:12px;color:var(--ink)}
+  .plan .price-lg span{font-family:var(--body);font-size:16px;font-weight:500;color:var(--muted);letter-spacing:0}
+  .plan .plan-sub{color:var(--muted);font-size:15.5px;margin-top:10px;max-width:38ch}
+  .plan ul{list-style:none;margin-top:24px;display:grid;gap:12px}
+  .plan ul li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink)}
+  .plan ul li::before{content:"";position:absolute;left:3px;top:8px;width:6px;height:6px;background:var(--green);transform:rotate(45deg)}
+  .plan .btn{margin-top:28px;width:100%;justify-content:center}
+  .plan .btn-outline{border:1.5px solid var(--green);color:var(--green);padding:13px 26px;background:transparent}
+  .plan .btn-outline:hover{background:var(--green);color:var(--paper)}
+  .pricing-note{margin-top:30px;font-size:15.5px;color:var(--muted);max-width:64ch}
+  .pricing-note strong{color:var(--ink);font-weight:600}
+
+  /* ---------- trust ---------- */
+  .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:720px){.trust-grid{grid-template-columns:1fr}}
+  .trust-cell{background:var(--paper);padding:36px 34px}
+  .band-tint .trust-cell{background:var(--surface)}
+  .trust-cell h4{font-size:20px;margin-bottom:10px}
+  .trust-cell p{font-size:16px;color:var(--muted)}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:66ch}
+  .faq details{border-top:1px solid var(--line)}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;position:relative;
+    font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink)}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";position:absolute;right:4px;top:18px;font-size:24px;line-height:1;color:var(--green);font-weight:400}
+  .faq details[open] summary::after{content:"\2013"}
+  .faq details p{color:var(--muted);font-size:16px;padding:0 0 24px;max-width:62ch}
+  .faq details p + p{padding-top:14px}
+  .faq details strong{color:var(--ink);font-weight:600}
+
+  /* ---------- closing ---------- */
+  .closing{text-align:center;padding:120px 0}
+  .closing .mark-c{margin:0 auto 30px}
+  .closing h2{color:var(--on-dark);font-size:clamp(30px,4.6vw,52px);max-width:20ch;margin:0 auto;font-weight:600}
+  .closing h2 .accent{color:var(--gold)}
+  .closing p{margin:24px auto 0;max-width:46ch;color:var(--on-dark-muted);font-size:18px}
+  .closing .btn{margin-top:38px}
+  .closing .btn-primary{background:var(--paper);color:var(--green)}
+  .closing .btn-primary:hover{background:#fff}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--green);color:var(--on-dark-muted);border-top:1px solid rgba(255,255,255,.08);padding:46px 0}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+  .foot .wordmark{font-family:var(--display);font-weight:600;font-size:17px;color:var(--on-dark)}
+  .foot .fine{font-size:13px;color:var(--on-dark-muted);margin-top:4px}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Studio home">
+      <svg class="mark plumb" viewBox="0 0 11 30" aria-hidden="true">
+        <line x1="5.5" y1="0" x2="5.5" y2="23" stroke="var(--green)"/>
+        <path class="bob" d="M5.5 23 L8.5 26.5 L5.5 30 L2.5 26.5 Z"/>
+      </svg>
+      <span class="wordmark">[Studio]</span>
+      <span class="tag">name TBD</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#believe">What we believe</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-cta" href="#call">Book a call</a>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-rule reveal" aria-hidden="true">
+      <svg class="plumb" viewBox="0 0 12 360" preserveAspectRatio="xMidYMin meet">
+        <line x1="6" y1="0" x2="6" y2="338" stroke="var(--green)"/>
+        <path class="bob" d="M6 338 L10 346 L6 360 L2 346 Z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="eyebrow reveal">Christian builders, on subscription</div>
+      <h1 class="reveal" style="margin-top:20px">Your product team, <span class="accent">on subscription</span>.</h1>
+      <p class="lede reveal">You've got an idea you can't shake — maybe you've already built a rough first version with AI tools. That's a real start. What it needs now is a team that ships. Send us the work — a screen, a feature, a fix, the whole build — and we ship it, one request at a time, fast. Pause the moment you don't need us. Pick it back up when you do.</p>
+      <div class="actions reveal">
+        <a class="btn btn-primary" href="#call">Book a free Founder Call</a>
+        <a class="btn btn-text" href="#how">See how it works <span class="arw">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="believe" class="band band-tint">
+  <div class="wrap">
+    <div class="belief reveal">
+      <div class="band-head">
+        <div class="eyebrow">What we believe</div>
+        <h2>Work is stewardship. Software is a craft.</h2>
+      </div>
+      <div class="statement">
+        <p>We're Christians who build good, true and beautiful software. We say that plainly because it shapes everything else. We believe our gifts — and the ideas we're each entrusted with — are meant to be developed with diligence and offered in service to others. And craft, done well, is a form of love for the person on the other side of the screen.</p>
+        <p>That conviction is why this works the way it does: a price you can plan around, work you can see the whole time, and the freedom to pause the instant you don't need us — <strong>because we won't take your money to sit idle</strong>.</p>
+        <p>Honest counsel, honest cadence, honest billing. We hold ourselves to a standard higher than the invoice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="band band-green">
+  <div class="wrap reveal">
+    <div class="band-head">
+      <div class="eyebrow on-dark">How it works</div>
+      <h2>Four steps, then repeat.</h2>
+      <p class="sub">No scoping negotiation, no hourly meter, no meeting required to start. Subscribe, and put us to work.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">STEP 01</div>
+        <h3>Subscribe</h3>
+        <p>One flat monthly rate. No contract, no scoping call required to begin.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">STEP 02</div>
+        <h3>Request</h3>
+        <p>Add as much as you like to your queue — designs, features, fixes, whole builds. Written down, async.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">STEP 03</div>
+        <h3>Receive</h3>
+        <p>We build one request at a time and ship fast — most in about 48 hours, larger features in shippable increments.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">STEP 04</div>
+        <h3>Revise</h3>
+        <p>Not right yet? Send it back. We revise until it is — as many passes as it takes.</p>
+      </div>
+    </div>
+    <div class="how-notes">
+      <div>
+        <h4>Pause anytime</h4>
+        <p>Building in bursts, or waiting on your own users? Pay for the weeks you're active and pause the rest. Your queue and your product wait for you — resume in a click.</p>
+      </div>
+      <div>
+        <h4>One thing at a time — on purpose</h4>
+        <p>You <strong>queue</strong> everything; we <strong>work</strong> one request at a time. That's the discipline that keeps the work good — full attention, shipped plumb, square, and true, instead of five half-finished features drifting at once.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="queue" class="band">
+  <div class="wrap">
+    <div class="band-head reveal">
+      <div class="eyebrow">What you can put on the queue</div>
+      <h2>Anything that moves your product forward.</h2>
+    </div>
+    <div class="queue reveal">
+      <div class="item"><h4>Ship the prototype</h4><p>The full arc from "it runs" to "people rely on it," delivered in increments.</p></div>
+      <div class="item"><h4>New features</h4><p>The next thing your users need — designed and built, end to end.</p></div>
+      <div class="item"><h4>Design</h4><p>Screens, flows, brand — the interface your users have to trust.</p></div>
+      <div class="item"><h4>Fixes &amp; hardening</h4><p>The bug, the security gap, the thing that breaks under real load.</p></div>
+      <div class="item"><h4>Infrastructure</h4><p>Deployment, monitoring, the plumbing that makes it production-grade.</p></div>
+      <div class="item"><h4>The small stuff</h4><p>Copy, a settings page, an integration — the polish that separates a demo from a product.</p></div>
+    </div>
+    <p class="queue-foot reveal">If it moves your product forward, <strong>it belongs on the queue.</strong></p>
+  </div>
+</section>
+
+<section id="pricing" class="band band-tint">
+  <div class="wrap">
+    <div class="band-head reveal">
+      <div class="eyebrow">The offer</div>
+      <h2>One price. Pause anytime. Spots are limited — on purpose.</h2>
+    </div>
+
+    <!-- Spot counter is a live element in production; numbers below are placeholders.
+         Open  → CTA reads "Book a Free Founder Call".
+         Full  → CTA reads "Join the waitlist" and this pill shows "Waitlist open". -->
+    <div class="spots reveal">
+      <span class="dot" aria-hidden="true"></span>
+      <span><strong>2 of 10</strong> spots open</span>
+      <span class="sep">·</span>
+      <span class="live">updated live</span>
+    </div>
+
+    <div class="plans reveal">
+      <div class="plan featured">
+        <div class="plan-tag">Most founders start here</div>
+        <h3>The Subscription</h3>
+        <div class="price-lg">$7,500<span> / month</span></div>
+        <p class="plan-sub">Your standing product team. One flat rate, everything included.</p>
+        <ul>
+          <li>One active request at a time — full attention, fast turnaround</li>
+          <li>Unlimited requests in your queue</li>
+          <li>Unlimited revisions — we build it until it's right</li>
+          <li>~48-hour turnaround on most requests; larger features in increments</li>
+          <li>Senior on both sides — engineering and design, no juniors, no handoffs</li>
+          <li>Async by default — a shared board, not a standing meeting</li>
+          <li>Pause anytime — pay for the weeks you build, not the weeks you don't</li>
+          <li>Yours completely — your accounts, your code, your product, from day one</li>
+        </ul>
+        <a class="btn btn-primary" href="#call">Book a free Founder Call</a>
+      </div>
+
+      <div class="plan">
+        <div class="plan-tag">Building on two tracks</div>
+        <h3>The Double</h3>
+        <div class="price-lg">$11,900<span> / month</span></div>
+        <p class="plan-sub">For founders moving fast — design and engineering running in parallel.</p>
+        <ul>
+          <li><strong>Two active requests at a time</strong> — the product moves twice as quickly</li>
+          <li>Everything in The Subscription, unchanged</li>
+          <li>Priority in the queue</li>
+          <li>The same pause-anytime freedom</li>
+        </ul>
+        <a class="btn btn-outline" href="#call">Book a free Founder Call</a>
+      </div>
+    </div>
+
+    <p class="pricing-note reveal">
+      <strong>Why the cap?</strong> The 48-hour rhythm, senior eyes on every piece of work, and counsel that actually knows your product only stay true if we refuse to overfill the bench. When the roster is full, the button becomes a waitlist and we'll give you an honest estimate of the wait. When a spot opens, it goes to the next founder in line.
+      <br><br>
+      <strong>Just one thing to ship?</strong> A subscription may be more than you need. Tell us on the Founder Call and we'll scope it as a fixed-price, one-time build instead. We fit the model to you — never the other way around.
+    </p>
+  </div>
+</section>
+
+<section id="trust" class="band">
+  <div class="wrap">
+    <div class="band-head reveal">
+      <div class="eyebrow">Why founders trust us</div>
+      <h2>Seasoned on both sides of the screen.</h2>
+    </div>
+    <div class="trust-grid reveal">
+      <div class="trust-cell"><h4>We build, and we counsel.</h4><p>Some teams only advise; some only execute. We do both — the judgment is in every request we ship, not sold separately by the hour.</p></div>
+      <div class="trust-cell"><h4>Senior, end to end.</h4><p>One of us leads engineering, the other design — and product strategy is the ground we share. One coherent vision on your queue, not a handoff between departments.</p></div>
+      <div class="trust-cell"><h4>Days, not quarters.</h4><p>We've built our practice on the best of today's tooling, so requests ship in days — without cutting the corners that prototypes cut.</p></div>
+      <div class="trust-cell"><h4>We tell you the truth.</h4><p>If a request is the wrong thing to build, we'll say so before we build it. If the model isn't right for you, we'll point you to what is.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="band band-tint">
+  <div class="wrap">
+    <div class="band-head reveal">
+      <div class="eyebrow">Questions</div>
+      <h2>The honest answers.</h2>
+    </div>
+    <div class="faq reveal">
+      <details open>
+        <summary>How fast will I get my request?</summary>
+        <p>Most single requests land in about 48 hours. Bigger features are broken into shippable pieces and delivered one after another, so you see steady progress the whole way — never a multi-week silence.</p>
+      </details>
+      <details>
+        <summary>What does "one at a time" mean?</summary>
+        <p>You can queue as many requests as you like; we actively build one at a time. It gets our full attention and ships fast, then we pull the next. Need two moving at once? That's The Double.</p>
+      </details>
+      <details>
+        <summary>Is it really unlimited?</summary>
+        <p>Unlimited <strong>requests in your queue</strong> and unlimited revisions, yes. We work them at the pace two senior builders can genuinely ship well — we'd rather tell you that plainly than promise magic.</p>
+      </details>
+      <details>
+        <summary>Why do you cap the number of clients?</summary>
+        <p>Because the promises on this page — 48-hour rhythm, senior attention on everything, counsel that knows your product — have a real ceiling, and we'd rather turn work away than quietly break them. The spot counter is live and truthful. If we're full, the waitlist is the honest answer, and we'll give you a straight estimate of the wait.</p>
+      </details>
+      <details>
+        <summary>Can I pause?</summary>
+        <p>Yes — and we mean it. Building in bursts, or waiting on your own users? Pause your subscription and stop paying; your queue and product wait for you. Resume in a click.</p>
+        <p>One honest caveat that comes with the roster cap: a paused subscription keeps your spot for <strong>[HOLD PERIOD: e.g. 60 days]</strong>. Pause longer and your spot may go to the waitlist — you'd rejoin at the front of the line. We'll always tell you before that happens.</p>
+      </details>
+      <details>
+        <summary>Do I own what you build?</summary>
+        <p>Completely. Your accounts, your code, your product, from the first day. No lock-in, no hostage infrastructure.</p>
+      </details>
+      <details>
+        <summary>Do we have to meet?</summary>
+        <p>Only if you want to. The work runs async on a shared board. We're happy to hop on a call when it actually helps — never as a tax on getting started.</p>
+      </details>
+      <details>
+        <summary>Why a subscription instead of a quote per project?</summary>
+        <p>Because most products aren't one job — they're a stream of them. A subscription means no re-quoting, no re-negotiating scope, no hourly meter. One price, work whenever you have it, pause when you don't.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="call" class="band-green closing">
+  <div class="wrap">
+    <svg class="mark-c plumb" width="22" height="58" viewBox="0 0 22 58" aria-hidden="true">
+      <line x1="11" y1="0" x2="11" y2="44" stroke="var(--on-dark)"/>
+      <path d="M11 44 L15 50 L11 58 L7 50 Z" fill="var(--on-dark)"/>
+    </svg>
+    <h2>Christians equipping Christians to make work that's <span class="accent">good, beautiful, and true.</span></h2>
+    <p>Start with a free, one-hour Founder Call. Bring your idea — leave with an honest read and a straight answer on whether the subscription is the right fit, with us or without us.</p>
+    <a class="btn btn-primary" href="#">Book your Founder Call</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="wordmark">[Studio]</div>
+      <div class="fine">Built plumb, square, and true.</div>
+    </div>
+    <div class="fine">© 2026 · Alternative "productized subscription" concept · placeholder copy &amp; prices for internal review · swap [Studio], set real prices + spot cap, add scheduling links before launch.</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+
+</body>
+</html>

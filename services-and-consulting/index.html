@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Studio] — A prototype isn't a product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fcfcfb;         /* near-white, faintly warm */
+    --surface:#f3f4f1;       /* light section tint */
+    --green-tint:#eef2ee;    /* faint green surface */
+    --ink:#15181b;           /* near-black text */
+    --muted:#5b615c;         /* secondary text */
+    --line:#e5e7e2;          /* hairline */
+    --green:#1b3b2f;         /* brand — deep pine */
+    --green-600:#245442;     /* hover */
+    --on-dark:#edefea;       /* text on green */
+    --on-dark-muted:#a7b3ac; /* secondary on green */
+    --display:'Schibsted Grotesk', system-ui, sans-serif;
+    --body:'Instrument Sans', system-ui, sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--body);color:var(--ink);background:var(--paper);
+    line-height:1.62;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+  @media(max-width:640px){.wrap{padding:0 24px}}
+
+  .eyebrow{
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:600;color:var(--green);
+  }
+  .eyebrow.on-dark{color:var(--on-dark)}
+
+  h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.06}
+
+  /* plumb line — the one signature, rendered as precise geometry */
+  .plumb line{stroke-width:1}
+  .plumb .bob{fill:var(--green)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(252,252,251,.82);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+  .brand .mark{width:11px;height:30px}
+  .brand .wordmark{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.01em}
+  .brand .tag{
+    font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:3px;padding:3px 6px;margin-left:3px;
+  }
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;opacity:.7;transition:opacity .2s}
+  .nav-links a:hover{opacity:1}
+  .nav-cta{
+    font-weight:600;color:var(--paper)!important;background:var(--green);
+    padding:9px 18px;border-radius:6px;opacity:1!important;transition:background .2s,transform .2s;
+  }
+  .nav-cta:hover{background:var(--green-600);transform:translateY(-1px)}
+  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:132px 0 118px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:auto 1fr;gap:46px}
+  @media(max-width:760px){.hero-grid{grid-template-columns:1fr;gap:0}}
+  .hero-rule{padding-top:6px}
+  .hero-rule svg{height:clamp(220px,34vw,360px);width:12px}
+  @media(max-width:760px){.hero-rule{display:none}}
+  .hero h1{
+    font-size:clamp(42px,6.6vw,80px);max-width:15ch;font-weight:600;
+  }
+  .hero h1 .accent{color:var(--green)}
+  .hero .lede{margin-top:28px;max-width:50ch;font-size:19px;color:var(--muted)}
+  .hero .actions{margin-top:38px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .btn{font-weight:600;font-size:15px;text-decoration:none;border-radius:7px;display:inline-flex;align-items:center;gap:8px;transition:transform .2s,background .2s,border-color .2s,color .2s}
+  .btn-primary{background:var(--green);color:var(--paper);padding:14px 26px}
+  .btn-primary:hover{background:var(--green-600);transform:translateY(-2px)}
+  .btn-text{color:var(--ink);padding:14px 8px;font-weight:600}
+  .btn-text .arw{transition:transform .2s}
+  .btn-text:hover{color:var(--green)}
+  .btn-text:hover .arw{transform:translateX(4px)}
+
+  /* ---------- section scaffolding ---------- */
+  .band{padding:104px 0}
+  .band-tint{background:var(--surface)}
+  .band-green{background:var(--green);color:var(--on-dark)}
+  .band-head{max-width:58ch;margin-bottom:52px}
+  .band-head h2{font-size:clamp(28px,4vw,44px);margin-top:16px}
+  .band-green .band-head h2{color:var(--on-dark)}
+
+  /* ---------- belief ---------- */
+  .belief .band-head{margin-bottom:32px}
+  .belief .statement{max-width:58ch}
+  .belief .statement p{font-size:17.5px;color:var(--muted);margin-bottom:18px}
+  .belief .statement p:last-child{margin-bottom:0}
+  .belief .statement strong{color:var(--ink);font-weight:600}
+  .triad{border-top:1px solid var(--line)}
+  .triad .row{padding:22px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:baseline}
+  .triad .t-word{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.02em;min-width:5.5em}
+  .triad .t-gloss{font-size:15px;color:var(--muted)}
+
+  /* ---------- how (green band) ---------- */
+  .how h2{font-size:clamp(28px,4vw,44px);max-width:22ch;color:var(--on-dark);margin:16px 0 24px}
+  .how p{font-size:19px;max-width:58ch;color:var(--on-dark-muted)}
+
+  /* ---------- offers ladder ---------- */
+  .ladder{position:relative}
+  .spine{position:absolute;left:5px;top:16px;bottom:52px;width:1px;background:var(--line)}
+  @media(max-width:640px){.spine{left:4px}}
+  .rung{position:relative;padding:34px 0 34px 46px;border-bottom:1px solid var(--line)}
+  .rung:last-child{border-bottom:none}
+  @media(max-width:640px){.rung{padding-left:34px}}
+  .rung .node{position:absolute;left:0;top:44px;width:11px;height:11px;background:var(--paper);border:1px solid var(--green);transform:rotate(45deg);transition:background .25s}
+  .band-tint .rung .node{background:var(--surface)}
+  .rung:hover .node{background:var(--green)}
+  .rung-top{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap}
+  .rung h3{font-size:25px;font-weight:600}
+  .rung .price{font-weight:600;font-size:15px;color:var(--green);white-space:nowrap}
+  .rung .price.free{color:var(--paper);background:var(--green);padding:4px 11px;border-radius:5px;font-size:13px}
+  .rung .body{margin-top:12px;max-width:64ch;color:var(--muted);font-size:16.5px}
+  .rung ul{list-style:none;margin-top:14px;display:grid;gap:9px;max-width:60ch}
+  .rung ul li{position:relative;padding-left:22px;font-size:15.5px;color:var(--ink)}
+  .rung ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;background:var(--green);transform:rotate(45deg)}
+  .rung .note{margin-top:15px;font-size:15.5px;color:var(--ink)}
+  .rung .note strong{color:var(--green);font-weight:600}
+
+  /* ---------- trust ---------- */
+  .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:720px){.trust-grid{grid-template-columns:1fr}}
+  .trust-cell{background:var(--paper);padding:36px 34px}
+  .band-tint .trust-cell{background:var(--surface)}
+  .trust-cell h4{font-size:20px;margin-bottom:10px}
+  .trust-cell p{font-size:16px;color:var(--muted)}
+
+  /* ---------- closing ---------- */
+  .closing{text-align:center;padding:120px 0}
+  .closing .mark-c{margin:0 auto 30px}
+  .closing h2{color:var(--on-dark);font-size:clamp(30px,4.6vw,52px);max-width:20ch;margin:0 auto;font-weight:600}
+  .closing h2 .accent{color:#e9c98f}
+  .closing p{margin:24px auto 0;max-width:46ch;color:var(--on-dark-muted);font-size:18px}
+  .closing .btn{margin-top:38px}
+  .closing .btn-primary{background:var(--paper);color:var(--green)}
+  .closing .btn-primary:hover{background:#fff}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--green);color:var(--on-dark-muted);border-top:1px solid rgba(255,255,255,.08);padding:46px 0}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+  .foot .wordmark{font-family:var(--display);font-weight:600;font-size:17px;color:var(--on-dark)}
+  .foot .fine{font-size:13px;color:var(--on-dark-muted);margin-top:4px}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Studio home">
+      <svg class="mark plumb" viewBox="0 0 11 30" aria-hidden="true">
+        <line x1="5.5" y1="0" x2="5.5" y2="23" stroke="var(--green)"/>
+        <path class="bob" d="M5.5 23 L8.5 26.5 L5.5 30 L2.5 26.5 Z"/>
+      </svg>
+      <span class="wordmark">[Studio]</span>
+      <span class="tag">name TBD</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#believe">What we believe</a>
+      <a href="#offers">How we help</a>
+      <a href="#trust">Why us</a>
+      <a class="nav-cta" href="#call">Book a call</a>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-rule reveal" aria-hidden="true">
+      <svg class="plumb" viewBox="0 0 12 360" preserveAspectRatio="xMidYMin meet">
+        <line x1="6" y1="0" x2="6" y2="338" stroke="var(--green)"/>
+        <path class="bob" d="M6 338 L10 346 L6 360 L2 346 Z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="eyebrow reveal">Christian builders, at your service</div>
+      <h1 class="reveal" style="margin-top:20px">A prototype isn't a <span class="accent">product</span>.</h1>
+      <p class="lede reveal">You've got an idea you can't shake — maybe you've even built a rough first version with AI tools. That's a real start. We're two Christians helping Christian entrepreneurs carry ideas the rest of the way: into real, shipped, production-grade products, made to last and made to serve.</p>
+      <div class="actions reveal">
+        <a class="btn btn-primary" href="#call">Book a free Founder Call</a>
+        <a class="btn btn-text" href="#offers">See how we help <span class="arw">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="believe" class="band band-tint">
+  <div class="wrap">
+    <div class="belief reveal">
+      <div class="band-head">
+        <div class="eyebrow">What we believe</div>
+        <h2>Work is stewardship. Software is a craft.</h2>
+      </div>
+      <div class="statement">
+        <p>We're Christians who build good, true and beautiful software. We say that plainly because it shapes everything else. We believe our gifts — and the ideas we're each entrusted with — are meant to be developed with diligence and offered in service to others. And craft, done well, is a form of love for the person on the other side of the screen.</p>
+        <p>We build for the long view. Not the quick flip, but the thing that endures — a product worth handing down, a <strong>legacy</strong> of work made carefully enough to outlast the season that produced it.</p>
+        <p>So we hold ourselves to a standard higher than the invoice: honest counsel even when it costs us the project, fixed prices you can plan around, and real accountability for whether the finished thing actually works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="band band-green">
+  <div class="wrap how reveal">
+    <div class="eyebrow on-dark">How we work</div>
+    <h2>Counsel, a plan, or a finished product — every path starts with a conversation.</h2>
+    <p>We're builders and we're advisors, and we don't think you should have to choose. Every engagement starts small, proves itself, and grows only as it earns your trust. You'll always know what you're paying, what you're getting, and what comes next. No open-ended hourly billing. No pressure to buy more than you need.</p>
+  </div>
+</section>
+
+<section id="offers" class="band">
+  <div class="wrap">
+    <div class="band-head reveal">
+      <div class="eyebrow">How we help</div>
+      <h2>A ladder of trust. Climb only as far as you need.</h2>
+    </div>
+    <div class="ladder">
+      <div class="spine" aria-hidden="true"></div>
+
+      <div class="rung reveal">
+        <span class="node" aria-hidden="true"></span>
+        <div class="rung-top"><h3>The Founder Call</h3><span class="price free">Free · 1 hour</span></div>
+        <p class="body">Before anything else, let's talk. Bring your idea, your prototype, or your conviction that there's something here. In one hour we'll give you our honest first read — what excites us, what concerns us, and the single most important next step, whether or not you ever work with us. You'll leave with something useful, not a sales pitch.</p>
+      </div>
+
+      <div class="rung reveal">
+        <span class="node" aria-hidden="true"></span>
+        <div class="rung-top"><h3>The Product Roadmap</h3><span class="price">$2,000 · one week</span></div>
+        <p class="body">Our advisory work in its most useful form: a focused week of counsel on your idea or prototype, ending in three things you keep.</p>
+        <ul>
+          <li>An honest assessment — what's solid, what's fragile, what stands between here and real customers</li>
+          <li>A prioritized roadmap — what to build first, what to skip, what it will take</li>
+          <li>A fixed-price proposal for the build, if one makes sense</li>
+        </ul>
+        <p class="note">Take it and build with anyone. Build with us within 60 days and <strong>the full $2,000 is credited</strong> toward the project.</p>
+      </div>
+
+      <div class="rung reveal">
+        <span class="node" aria-hidden="true"></span>
+        <div class="rung-top"><h3>The Launch Package</h3><span class="price">$8,500 – $15,000</span></div>
+        <p class="body">Our flagship: your prototype becomes a shipped product. Fixed scope, fixed price quoted before we start, typically live in three to five weeks.</p>
+        <ul>
+          <li>Deployed, secured, and monitored — real infrastructure, not a demo link</li>
+          <li>Designed with intention — interfaces your users can trust</li>
+          <li>Built to be maintained — clean, documented, ready to grow</li>
+          <li>Yours completely — your accounts, your code, your product</li>
+        </ul>
+        <p class="note">One price. One outcome. <strong>We're responsible for it working.</strong></p>
+      </div>
+
+      <div class="rung reveal">
+        <span class="node" aria-hidden="true"></span>
+        <div class="rung-top"><h3>Custom Builds</h3><span class="price">Quoted · from $20,000</span></div>
+        <p class="body">For products that outgrow a package: established businesses, funded ventures, complex integrations, regulated domains. Scoped through the Roadmap and quoted as a fixed project with milestones.</p>
+      </div>
+
+      <div class="rung reveal">
+        <span class="node" aria-hidden="true"></span>
+        <div class="rung-top"><h3>Ongoing Product Partner</h3><span class="price">from $3,000 / month</span></div>
+        <p class="body">After launch, most products don't need a full-time team — they need senior judgment on tap and someone watching over what was built. We stay on as your fractional product, design, and engineering partner: advising the roadmap, shipping improvements, and quietly keeping the systems healthy with automated security patching, monitoring, and fixes. Month to month — scale up as you grow, down when you're steady.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="trust" class="band band-tint">
+  <div class="wrap">
+    <div class="band-head reveal">
+      <div class="eyebrow">Why founders trust us</div>
+      <h2>Seasoned on both sides of the screen.</h2>
+    </div>
+    <div class="trust-grid reveal">
+      <div class="trust-cell"><h4>We build, and we counsel.</h4><p>Some teams only advise; some only execute. We do both — because good building requires good judgment, and good advice is worthless without someone accountable for carrying it out.</p></div>
+      <div class="trust-cell"><h4>Senior, end to end.</h4><p>One of us leads engineering, the other design — and product strategy is the ground we share. You get one coherent vision, not a handoff between departments.</p></div>
+      <div class="trust-cell"><h4>Weeks, not quarters.</h4><p>We've built our practice on the best of today's tooling, so a launch takes weeks — without cutting the corners that prototypes cut.</p></div>
+      <div class="trust-cell"><h4>We tell you the truth.</h4><p>If your idea has a problem, we'll say so plainly — in the free call, in the Roadmap, mid-project if we find it. We answer to a higher standard than the invoice.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="call" class="band-green closing">
+  <div class="wrap">
+    <svg class="mark-c plumb" width="22" height="58" viewBox="0 0 22 58" aria-hidden="true">
+      <line x1="11" y1="0" x2="11" y2="44" stroke="var(--on-dark)"/>
+      <path d="M11 44 L15 50 L11 58 L7 50 Z" fill="var(--on-dark)"/>
+    </svg>
+    <h2>Christians equipping Christians to make work that's <span class="accent">good, beautiful, and true.</span></h2>
+    <p>Start with a free, one-hour Founder Call. Bring your idea — leave with an honest read and a real next step, with us or without us.</p>
+    <a class="btn btn-primary" href="#">Book your Founder Call</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="wordmark">[Studio]</div>
+      <div class="fine">Built plumb, square, and true.</div>
+    </div>
+    <div class="fine">© 2026 · Placeholder copy for internal review · swap [Studio], add scheduling links + one real proof point before launch.</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+
+</body>
+</html>
